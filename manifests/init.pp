@@ -91,24 +91,24 @@ class apache::base {
 		refreshonly => true,
 		before => Service["apache"],
 	}
-    case $monitoring_stuff {
-        
-    
-    	# Monitoring stuff: munin and nagios
-    	$real_munin_stats_port = $munin_stats_port ? { '' => 8666, default => $munin_stats_port }
-    	apache::port { "apache::munin": port => $real_munin_stats_port }
-    	package { "libwww-perl": ensure => installed }
-    	apache::module { info: ensure => present }
-    	apache::site { munin-stats: ensure => present, content => template("apache/munin-stats"), }
-    	munin::plugin {
-    		[ "apache_accesses", "apache_processes", "apache_volume" ]:
-    			ensure => present,
-    			config => "env.url http://${hostname}:${real_munin_stats_port}/server-status?auto"
-    	}
-    	nagios::service { "http_${apache_port_real}":
-    		check_command => "http_port!${apache_port_real}"
-	}
-}
+#     case $monitoring_stuff {
+#         
+#     
+#       # Monitoring stuff: munin and nagios
+#       $real_munin_stats_port = $munin_stats_port ? { '' => 8666, default => $munin_stats_port }
+#       apache::port { "apache::munin": port => $real_munin_stats_port }
+#       package { "libwww-perl": ensure => installed }
+#       apache::module { info: ensure => present }
+#       apache::site { munin-stats: ensure => present, content => template("apache/munin-stats"), }
+#       munin::plugin {
+#           [ "apache_accesses", "apache_processes", "apache_volume" ]:
+#               ensure => present,
+#               config => "env.url http://${hostname}:${real_munin_stats_port}/server-status?auto"
+#       }
+#       nagios::service { "http_${apache_port_real}":
+#           check_command => "http_port!${apache_port_real}"
+#   }
+# }
 
 }
 
