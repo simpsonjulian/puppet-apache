@@ -23,20 +23,23 @@ class apache::debian inherits apache::base {
 	file { "/etc/apache2/sites-enabled/000-default": ensure => absent }
 
 	# activate inclusion of unified directory structure
-	line { 
-		"include_mods":
-			line => "Include ${module_dir_path}/apache/mods/",
-			notify => Exec["reload-apache"],
-			ensure => present, file => "/etc/apache2/apache2.conf";
-		"include_conf":
-			line => "Include ${module_dir_path}/apache/conf/",
-			notify => Exec["reload-apache"],
-			require => Line["include_mods"],
-			ensure => present, file => "/etc/apache2/apache2.conf";
-		"include_sites":
-			line => "Include ${module_dir_path}/apache/sites/",
-			notify => Exec["reload-apache"],
-			require => Line["include_conf"],
-			ensure => present, file => "/etc/apache2/apache2.conf";
-	}
+	
+	# I'm not sure I want a unified directory structure and 
+	# I'm not keen on editing files ala cfengine
+    # line { 
+    #   "include_mods":
+    #       line => "Include ${module_dir_path}/apache/mods/",
+    #       notify => Exec["reload-apache"],
+    #       ensure => present, file => "/etc/apache2/apache2.conf";
+    #   "include_conf":
+    #       line => "Include ${module_dir_path}/apache/conf/",
+    #       notify => Exec["reload-apache"],
+    #       require => Line["include_mods"],
+    #       ensure => present, file => "/etc/apache2/apache2.conf";
+    #   "include_sites":
+    #       line => "Include ${module_dir_path}/apache/sites/",
+    #       notify => Exec["reload-apache"],
+    #       require => Line["include_conf"],
+    #       ensure => present, file => "/etc/apache2/apache2.conf";
+    # }
 }
